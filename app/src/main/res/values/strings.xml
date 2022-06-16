@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QRDoc</string>
+    <string name="BNQR">QR</string>
+    <string name="BNNEXT">NEXT</string>
 </resources>

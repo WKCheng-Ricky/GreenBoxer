@@ -31,22 +31,22 @@ public class MainActivity extends AppCompatActivity {
         Button BNNEXT = findViewById(R.id.BNNEXT);
 
         if(BNQR != null){
-            BNQR.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, QRActivity.class));
-                    finish();
-                }
+            BNQR.setOnClickListener(v -> {
+                startActivity(new Intent(MainActivity.this, QRActivity.class));
+                //finish();
             });
         }
 
-        if(BNNEXT != null){
-
-        }
+//        if(BNNEXT != null){
+//
+//        }
     }
 
 
 }
+
+
+//
 //
 //public class MainActivity extends AppCompatActivity {
 //    private static final int MY_CAMERA_REQUEST_CODE = 100;
