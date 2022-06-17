@@ -27,22 +27,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button BNQR = findViewById(R.id.BNQR);
-        Button BNNEXT = findViewById(R.id.BNNEXT);
+        Button btn_qr = findViewById(R.id.btn_qr);
+        Button btn_next = findViewById(R.id.btn_next);
 
-        if(BNQR != null){
-            BNQR.setOnClickListener(v -> {
+        if(btn_qr != null){
+            btn_qr.setOnClickListener(v -> {
                 startActivity(new Intent(MainActivity.this, QRActivity.class));
                 //finish();
             });
         }
 
-//        if(BNNEXT != null){
-//
-//        }
+        if(btn_next != null){
+            btn_next.setOnClickListener(v -> {
+                startActivity(new Intent(MainActivity.this,SheetActivity.class));
+               // finish();
+            });
+
+        }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }
 
 
