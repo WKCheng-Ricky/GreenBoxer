@@ -3,12 +3,11 @@
     package="a0611076.qrdoc">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
 
     <application
         android:allowBackup="true"
@@ -17,6 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRDoc">
+        <activity
+            android:name=".AuthActivity"
+            android:exported="false" />
         <activity
             android:name=".SheetActivity"
             android:exported="false" />
