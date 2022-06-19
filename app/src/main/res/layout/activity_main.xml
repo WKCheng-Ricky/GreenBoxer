@@ -41,46 +41,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.399" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.889" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
-
-<!--    <com.budiyev.android.codescanner.CodeScannerView-->
-<!--        android:id="@+id/scanner_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="400dp"-->
-<!--        app:autoFocusButtonColor="@android:color/white"-->
-<!--        app:autoFocusButtonVisible="true"-->
-<!--        app:flashButtonColor="@android:color/white"-->
-<!--        app:flashButtonVisible="true"-->
-<!--        app:maskColor="#6C000000"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_textView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/scanner_view"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_margin="20dp"-->
-<!--        android:text="Scanning..."-->
-<!--        android:textColor="@android:color/black"/>-->
-
-
-<!--</RelativeLayout>-->
-
-<!--<FrameLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-
-<!--    <com.budiyev.android.codescanner.CodeScannerView-->
-<!--        android:id="@+id/scanner_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
-<!--</FrameLayout>-->
 

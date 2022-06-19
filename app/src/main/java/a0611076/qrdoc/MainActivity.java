@@ -16,102 +16,82 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.zxing.Result;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
 
+    Button btn_qr, btn_next;
+    SignInButton signInButton;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn_qr = findViewById(R.id.btn_qr);
-        Button btn_next = findViewById(R.id.btn_next);
+        btn_qr = findViewById(R.id.btn_qr);
+        btn_next = findViewById(R.id.btn_next);
+        signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        if(btn_qr != null){
-            btn_qr.setOnClickListener(v -> {
-                startActivity(new Intent(MainActivity.this, QRActivity.class));
-                //finish();
-            });
-        }
+        findViewById(R.id.btn_qr).setOnClickListener(this);
+        findViewById(R.id.btn_next).setOnClickListener(this);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        gsc = GoogleSignIn.getClient(this, gso);
+
+//        if(btn_qr != null){
+//            btn_qr.setOnClickListener(v -> {
+//                startActivity(new Intent(MainActivity.this, QRActivity.class));
+//                //finish();
+//            });
+//        }
 
         if(btn_next != null){
             btn_next.setOnClickListener(v -> {
                 startActivity(new Intent(MainActivity.this,SheetActivity.class));
-               // finish();
+                // finish();
             });
-
         }
+
+
     }
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }
 
-
-//
-//
-//public class MainActivity extends AppCompatActivity {
-//    private static final int MY_CAMERA_REQUEST_CODE = 100;
-//
-//
-//    private CodeScanner mCodeScanner;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//
-//        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-//        }
-//
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        CodeScannerView scannerView = findViewById(R.id.scanner_view);
-//        mCodeScanner = new CodeScanner(this, scannerView);
-//        mCodeScanner.setDecodeCallback(new DecodeCallback() {
-//            @Override
-//            public void onDecoded(@NonNull final Result result) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }
-//        });
-//        scannerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCodeScanner.startPreview();
-//            }
-//        });
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mCodeScanner.startPreview();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        mCodeScanner.releaseResources();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == MY_CAMERA_REQUEST_CODE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
-//            }
-//        }
-//    }
-//}
