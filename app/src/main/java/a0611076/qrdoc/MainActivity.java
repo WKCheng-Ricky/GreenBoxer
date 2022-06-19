@@ -1,35 +1,27 @@
 package a0611076.qrdoc;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.budiyev.android.codescanner.CodeScanner;
-import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
-import com.google.zxing.Result;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = "Sign in failed";
     GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-
-    Button btn_qr, btn_next;
-    SignInButton signInButton;
+    GoogleSignInClient mGoogleSignInClient;
+    int RC_SIGN_IN = 1000;
 
     @Override
     protected void onStart() {
@@ -42,6 +34,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateUI(GoogleSignInAccount account) {
+        // to be implemented
+
+        if(account != null){
+            findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_acc).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_acc).setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -49,13 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn_qr = findViewById(R.id.btn_qr);
-        btn_next = findViewById(R.id.btn_next);
-        signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        // Set the dimensions of the sign-in button. (Optional)
+        // SignInButton signInButton = findViewById(R.id.sign_in_button);
+        // signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         findViewById(R.id.btn_qr).setOnClickListener(this);
         findViewById(R.id.btn_next).setOnClickListener(this);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.btn_acc).setOnClickListener(this);
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -64,21 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        gsc = GoogleSignIn.getClient(this, gso);
-
-//        if(btn_qr != null){
-//            btn_qr.setOnClickListener(v -> {
-//                startActivity(new Intent(MainActivity.this, QRActivity.class));
-//                //finish();
-//            });
-//        }
-
-        if(btn_next != null){
-            btn_next.setOnClickListener(v -> {
-                startActivity(new Intent(MainActivity.this,SheetActivity.class));
-                // finish();
-            });
-        }
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
     }
@@ -91,7 +80,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.sign_in_button:
+                signIn();
+                break;
+            case R.id.btn_next:
+                startActivity(new Intent(MainActivity.this,SheetActivity.class));
+                //finish();
+                break;
+            case R.id.btn_qr:
+                startActivity(new Intent(MainActivity.this,QRActivity.class));
+                //finish();
+                break;
 
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
     }
 }
 
