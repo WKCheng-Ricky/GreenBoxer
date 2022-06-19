@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -15,6 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SignInButton signInButton = findViewById(R.id.sign_in_button);
         // signInButton.setSize(SignInButton.SIZE_STANDARD);
 
+        // Setting on click listener
         findViewById(R.id.btn_qr).setOnClickListener(this);
         findViewById(R.id.btn_next).setOnClickListener(this);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -92,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this,QRActivity.class));
                 //finish();
                 break;
-
+            case R.id.btn_acc:
+                startActivity(new Intent(MainActivity.this,AccountActivity.class));
+                //finish();
         }
     }
 
@@ -120,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Signed in successfully, show authenticated UI.
             updateUI(account);
+
+            Toast.makeText(this,"Signed in",Toast.LENGTH_SHORT).show();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
